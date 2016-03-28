@@ -5,8 +5,7 @@ from flask import Flask, jsonify, request, make_response
 import requests
 
 #project
-import searchapiutil
-import uclsearch
+from searchimpl import searchapiutil, uclsearch
 
 app = Flask(__name__)
 
@@ -35,7 +34,7 @@ def search():
     query_id -= 1
     
     google_res = get_google_res(queries[query_id]['content'])
-    ucl_res = []
+    ucl_res = uclsearch.get_ucl_res(queries[query_id]['content'])
     ours_res = []
     
     return make_response(jsonify(
@@ -58,5 +57,3 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-#view-source:http://search2.ucl.ac.uk/s/suggest.json?partial_query=eye&collection=website-meta&profile=_website&sumbit=Go
