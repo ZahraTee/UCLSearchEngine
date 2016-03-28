@@ -1,7 +1,12 @@
 #!flask/bin/python
+
+#libraries
 from flask import Flask, jsonify, request, make_response
 import requests
+
+#project
 import searchapiutil
+import uclsearch
 
 app = Flask(__name__)
 
@@ -53,3 +58,5 @@ def not_found(error):
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+#view-source:http://search2.ucl.ac.uk/s/suggest.json?partial_query=eye&collection=website-meta&profile=_website&sumbit=Go
