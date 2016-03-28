@@ -1,40 +1,14 @@
 #!flask/bin/python
 from flask import Flask, jsonify, request, make_response
 import requests
+import searchapiutil
 
 app = Flask(__name__)
 
-def read_credentials():
-    f = open('credentials', 'r')
-    return {'key' : f.readline().rstrip('\n'), 'cx': f.readline().rstrip('\n')}
-
-def read_queries():
-    queries = []
-    with open('queries', 'r') as f:
-        query_id = 1
-        category = 'unknown'
-        for line in f:
-            
-            if line == '\n':
-                continue
-
-            if line[0] == '[':
-                category = line[1:-2]
-                continue
-            
-            queries.append({
-                    'id': query_id,
-                    'content' : line[:-1],
-                    'category' : category
-                })
-            query_id += 1
-
-    return queries
-
-queries = read_queries()
+queries = searchapiutil.read_queries()
 
 def get_google_res(query):
-    credentials = read_credentials()
+    credentials = searchapiutil.read_credentials()
     res = requests.get('https://www.googleapis.com/customsearch/v1?key=' + credentials['key'] 
         + '&cx=' + credentials['cx'] 
         + '&q=' + query + '&num=10&start=1')

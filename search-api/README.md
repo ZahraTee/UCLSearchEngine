@@ -4,7 +4,7 @@ Everything is inside search-api folder
 
 `virtualenv search-env`
 
-###Activate virtuanenv
+###Activate virtualnenv
 
 `source search-env/bin/activate`
 
@@ -14,12 +14,15 @@ Everything is inside search-api folder
 
 ###Install all required modules from requirements file
 
-`source search-env/bin/activate`
-`pip install -r requirements.txt`
+``source search-env/bin/activate``
+``pip install -r requirements.txt``
 
 ###Add new module and update requirements file
 
-`source search-env/bin/activate`
-`pip install <module-name>`
-`pip freeze > requirements.txt`
+``source search-env/bin/activate``
+``pip install <module-name>``
+``pip freeze > requirements.txt``
 
+###Run application
+
+`python app.py`
