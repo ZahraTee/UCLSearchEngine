@@ -5,19 +5,11 @@ from flask import Flask, jsonify, request, make_response
 import requests
 
 #project
-from searchimpl import searchapiutil, uclsearch
+from searchimpl import searchapiutil, uclsearch, googlesearch
 
 app = Flask(__name__)
 
 queries = searchapiutil.read_queries()
-
-def get_google_res(query):
-    credentials = searchapiutil.read_credentials()
-    res = requests.get('https://www.googleapis.com/customsearch/v1?key=' + credentials['key'] 
-        + '&cx=' + credentials['cx'] 
-        + '&q=' + query + '&num=10&start=1')
-    return res.json()
-
 
 #API start
 @app.route('/')
@@ -33,8 +25,8 @@ def search():
          return make_response(jsonify({'error': 'Query with id ' + str(query_id) + ' not found'}), 404)
     query_id -= 1
     
-    google_res = get_google_res(queries[query_id]['content'])
-    ucl_res = uclsearch.get_ucl_res(queries[query_id]['content'])
+    google_res = googlesearch.get_res(queries[query_id]['content'])
+    ucl_res = uclsearch.get_res(queries[query_id]['content'])
     ours_res = []
     
     return make_response(jsonify(

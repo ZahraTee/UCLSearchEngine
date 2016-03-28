@@ -1,20 +1,26 @@
 from bs4 import BeautifulSoup
 import requests
 
+from searchimpl import searchapiutil
+
 def strip_string(item):
 	return item.replace("\t", "").replace("\r", "").replace("\n", "").replace("  ", "")
 
 
 def parse_item(item):
 	#TODO add id
+	
 	desc = item.find(attrs={'class': 'result__summary'})
 	desc.attrs = {}
 	desc = str(desc)
 	desc = strip_string(desc)
+	
 	title = item.find(attrs={'class': 'result__title'}).get_text()
 	title = strip_string(title)
+	
 	link = item.find(attrs={'class': 'result__link'}).get_text()
 	link = strip_string(link)
+	link = searchapiutil.normalize(link)
 	
 	return { 'title' : title,
 			  'desc' : desc,
@@ -29,7 +35,7 @@ def parse_results(link):
 		results.append(parse_item(item))
 	return results
 
-def get_ucl_res(query):
+def get_res(query):
     
     results = parse_results('http://search2.ucl.ac.uk/s/search.html?query='
     	+ query + '&collection=website-meta&profile=_website')

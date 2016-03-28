@@ -24,3 +24,14 @@ def read_queries():
             query_id += 1
 
     return queries
+
+#A Function which gets a url and normalize it, to avoid duplication of crawling
+def normalize(url):
+    if url[4]=='s':
+        url = url[:4]+url[5:]
+    if url[-1]=='/':
+        url = url[:-1]
+    s = url.find("#")
+    if s!=-1:
+        url = url[:s]
+    return url
