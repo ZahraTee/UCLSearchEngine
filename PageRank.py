@@ -11,7 +11,7 @@ URL_PATH=PATH+"/url"
 LINKS_PATH=PATH+"/links"
 
 N = len(os.listdir(URL_PATH))-2 #Excluding '.DS_Store' and 'about' files
-#N=50
+#N=500
 
 URL_INDEX_MAP= {}
 for n in range(N):
@@ -41,16 +41,17 @@ for T in range(MAX_ITERATIONS):
         x = PAGE_RANK[n]*(1.0-JUMP_PROBABILITY)/len(LINKS[n])
         for t in LINKS[n]:
             NEW_RANK[t]+=x
-    if T>=MIN_ITERATIONS:
-        DIST=0
-        for i in range(N):
-            DIST+=pow((NEW_RANK[i]-PAGE_RANK[i]),2)
-        DIST=pow(DIST,0.5)
-        PAGE_RANK=NEW_RANK
-        if DIST<EPSILON:
-            break
-    else:
-        PAGE_RANK=NEW_RANK
+    DIST=0
+    for i in range(N):
+        DIST+=pow((NEW_RANK[i]-PAGE_RANK[i]),2)
+    DIST=pow(DIST,0.5)
+    ADJUST_RATIO = 1.0/sum(NEW_RANK)
+    for i in range(N):
+        NEW_RANK[i]*=ADJUST_RATIO
+    PAGE_RANK=NEW_RANK
+    if T>=MIN_ITERATIONS and DIST<EPSILON:
+        break
+    
 
 OUTPUT_FILE=open("PageRank.txt","w")
 for n in range(N):
