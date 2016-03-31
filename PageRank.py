@@ -1,12 +1,12 @@
 import os
 
 
-EPSILON = 0.001
+EPSILON = 0.0001
 MIN_ITERATIONS=40
 MAX_ITERATIONS=200
 JUMP_PROBABILITY=0.2
 
-PATH="/Users/walsaeed/GitHub/UCLSearchEngine/crawler"
+PATH="crawler"
 URL_PATH=PATH+"/url"
 LINKS_PATH=PATH+"/links"
 
@@ -33,7 +33,7 @@ for n in range(N):
             LINKS[n]+=[URL_INDEX_MAP[link]]
 
 PAGE_RANK=[1.0/N]*N
-for T in range(MAX_ITERATIONS):
+for T in range(1,MAX_ITERATIONS+1):
     NEW_RANK=[JUMP_PROBABILITY/N]*N
     for n in range(N):
         if len(LINKS[n])==0:
