@@ -87,7 +87,7 @@ fi
 
 if [ ! -n "$TERRIER_HEAP_MEM" ];
 then
-    TERRIER_HEAP_MEM=1024M
+    TERRIER_HEAP_MEM=2048M
 fi
 
 #JAVA_OPTIONS=
