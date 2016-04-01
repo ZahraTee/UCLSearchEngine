@@ -1,5 +1,7 @@
 #Crawling
-crawler/scrapy crawl two
+cd crawler
+scrapy crawl two
+cd ..
 
 #Compute PageRank
 python PageRank.py
