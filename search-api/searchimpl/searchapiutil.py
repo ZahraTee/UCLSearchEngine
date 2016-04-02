@@ -29,9 +29,9 @@ def read_queries():
 def normalize(url):
     if url[4]=='s':
         url = url[:4]+url[5:]
-    if url[-1]=='/':
-        url = url[:-1]
     s = url.find("#")
     if s!=-1:
         url = url[:s]
+    if url[-1]=='/':
+        url = url[:-1]
     return url

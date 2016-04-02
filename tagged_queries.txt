@@ -1,0 +1,305 @@
+<top>
+<id>1
+<category>faculty
+<query>Engineering
+</top>
+
+<top>
+<id>2
+<category>faculty
+<query>
+Life Sciences
+</top>
+
+<top>
+<id>3
+<category>faculty
+<query>Laws
+</top>
+
+<top>
+<id>4
+<category>faculty
+<query>Arts
+</top>
+
+<top>
+<id>5
+<category>department
+<query>English Language & Literature
+</top>
+
+<top>
+<id>6
+<category>department
+<query>UCL Advances
+</top>
+
+<top>
+<id>7
+<category>department
+<query>Mechanical Engineering
+</top>
+
+<top>
+<id>8
+<category>department
+<query>Anthropology
+</top>
+
+<top>
+<id>9
+<category>department
+<query>SSEES
+</top>
+
+<top>
+<id>10
+<category>department
+<query>Physics & Astronomy
+</top>
+
+<top>
+<id>11
+<category>module name
+<query>International Business
+</top>
+
+<top>
+<id>12
+<category>module name
+<query>European Integration in Historical Perspective
+</top>
+
+<top>
+<id>13
+<category>module name
+<query>History of Philosophy I
+</top>
+
+<top>
+<id>14
+<category>module name
+<query>Concepts, Categories and the Practice of History 
+</top>
+
+<top>
+<id>15
+<category>module name
+<query>Combinatorial Optimisation
+</top>
+
+<top>
+<id>16
+<category>module name
+<query>Computer Music
+</top>
+
+
+<top>
+<id>17
+<category>module code
+<query>MSIN3001
+</top>
+
+<top>
+<id>18
+<category>module code
+<query>COMPM052
+</top>
+
+<top>
+<id>19
+<category>module code
+<query>LCJA6002
+</top>
+
+<top>
+<id>20
+<category>module code
+<query>HPSC3046
+</top>
+
+<top>
+<id>21
+<category>module code
+<query>STAT3102
+</top>
+
+<top>
+<id>22
+<category>person
+<query>Graham Roberts
+</top>
+
+<top>
+<id>23
+<category>person
+<query>Christopher Nolan
+</top>
+
+<top>
+<id>24
+<category>person
+<query>Graham Roberts computer science
+</top>
+
+<top>
+<id>25
+<category>person
+<query>Johnny Glover
+</top>
+
+<top>
+<id>26
+<category>person
+<query>Michael Arthur
+</top>
+
+<top>
+<id>27
+<category>person
+<query>John O'Keefe
+</top>
+
+<top>
+<id>28
+<category>paper name
+<query>Secure Spread Spectrum Watermarking for Multimedia
+</top>
+
+<top>
+<id>29
+<category>paper name
+<query>Assessing the Fiscal Costs and Benefits of A8 Migration to the UK
+</top>
+
+<top>
+<id>30
+<category>research group
+<query>Virtual Environments and Computer Graphics Group
+</top>
+
+<top>
+<id>31
+<category>research group
+<query>Microstructure Imaging Group
+</top>
+
+<top>
+<id>32
+<category>research group
+<query>Healthy Infrastructure Research Group
+</top>
+
+<top>
+<id>33
+<category>research group
+<query>Human Rights Group
+</top>
+
+<top>
+<id>34
+<category>research group
+<query>Complex Built Environment Systems Group
+</top>
+
+
+<top>
+<id>35
+<category>event name
+<query>Festival for Digital Health
+</top>
+
+<top>
+<id>36
+<category>event name
+<query>Fresher’s Fair
+</top>
+
+<top>
+<id>37
+<category>event name
+<query>Graduation
+</top>
+
+<top>
+<id>38
+<category>event name
+<query>Lunch Hour Lectures
+</top>
+
+
+<top>
+<id>39
+<category>locations
+<query>Lost and found
+</top>
+
+<top>
+<id>40
+<category>locations
+<query>Print Room
+</top>
+
+<top>
+<id>41
+<category>locations
+<query>Drayton House
+</top>
+
+<top>
+<id>42
+<category>locations
+<query>Cruciform Hub
+</top>
+
+<top>
+<id>43
+<category>locations
+<query>Art Museum
+</top>
+
+<top>
+<id>44
+<category>locations
+<query>Pearson Building
+</top>
+
+
+<top>
+<id>45
+<category>general concept
+<query>Hematology
+</top>
+
+<top>
+<id>46
+<category>general concept
+<query>
+Gerontology
+</top>
+
+<top>
+<id>47
+<category>general concept
+<query>Bentham (Historical Figure)
+</top>
+
+<top>
+<id>48
+<category>general concept
+<query>Bioinformatics
+</top>
+
+<top>
+<id>49
+<category>general concept
+<query>Bioinformatics research group
+</top>
+
+<top>
+<id>50
+<category>general concept
+<query>Static Showdown
+</top>
