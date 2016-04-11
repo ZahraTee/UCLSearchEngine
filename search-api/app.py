@@ -14,8 +14,8 @@ queries = searchapiutil.read_queries()
 #API start
 @app.route('/')
 def index():
-    return "Hello, World! This is an api."
-
+  return make_response(open('templates/index.html').read())
+  ##return "Hello, World! This is an api."#/
 
 @app.route('/api/search', methods=['GET'])
 def search():

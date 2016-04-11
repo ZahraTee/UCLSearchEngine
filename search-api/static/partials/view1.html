@@ -1,0 +1,16 @@
+    <form>
+      <div class="row" ng-init = "loadResults()">
+        <div class="nine columns">
+          <input class="u-full-width" type="text" placeholder = "Enter search query here"></input>
+        </div>
+        <div class="three columns">
+          <input class="button-primary" value="Submit" type="submit"/>
+        </div>
+      </div>
+    </form>
+
+    {{resultsList}}
+
+    <div class="list-group-item" ng-repeat="result in resultsList">
+      {{result}}
+    </div>
