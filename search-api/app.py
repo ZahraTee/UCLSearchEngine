@@ -3,9 +3,10 @@
 #libraries
 from flask import Flask, jsonify, request, make_response
 import requests
+from datetime import datetime
 
 #project
-from searchimpl import searchapiutil, uclsearch, googlesearch
+from searchimpl import searchapiutil, uclsearch, googlesearch, judging
 
 app = Flask(__name__)
 
@@ -20,28 +21,68 @@ def index():
 @app.route('/api/search', methods=['GET'])
 def search():
     query_id = request.args.get('query_id', -1, type = int)
+    bucket_id = request.args.get('bucket', -1, type = int)
 
     if query_id <= 0 or query_id > len(queries):
          return make_response(jsonify({'error': 'Query with id ' + str(query_id) + ' not found'}), 404)
     query_id -= 1
+
+    if bucket_id <= 0 or bucket_id > 4:
+         return make_response(jsonify({'error': 'Bucket with id ' + str(bucket_id) + ' not found'}), 404)
+    bucket_id -= 1
     
-    google_res = googlesearch.get_res(queries[query_id]['content'])
+    #google_res = googlesearch.get_res(queries[query_id]['content'])
+    google_res = []
     ucl_res = uclsearch.get_res(queries[query_id]['content'])
     ours_res = []
+    results = []
+    if bucket_id != -1:
+        results = judging.bucketresults(bucket_id, google_res, ucl_res, ours_res)
+    else:
+        results = {'query': queries[query_id],
+         'google' : google_res,
+          'ucl': ucl_res,
+          'ours': ours_res}
+    queries[query_id]['bucket_id'] = bucket_id + 1
+    return make_response(jsonify( 
+        { 'query': queries[query_id],
+         'results': results }), 200)
     
-    return make_response(jsonify(
-    	{'query': queries[query_id],
-    	 'google' : google_res,
-    	  'ucl': ucl_res,
-    	  'ours': ours_res}), 200)
 
-@app.route('/api/queries', methods=['GET'])
+@app.route('/api/query', methods=['GET'])
 def get_queries():
     return make_response(jsonify({'queries': queries}), 200)
 
-@app.route('/api/queries/<int:query_id>', methods=['GET'])
+@app.route('/api/query/<int:query_id>', methods=['GET'])
 def get_query(query_id):
     return make_response(jsonify(queries[query_id - 1]), 200)
+
+@app.route('/api/judgement', methods=['POST'])
+def show_post():
+    data = request.json
+    query_id = data["query"]["id"]
+    if query_id <= 0 or query_id > len(queries):
+         return make_response(jsonify({'error': 'Query with id ' + str(query_id) + ' not found'}), 404)
+    query_id -= 1
+
+    bucket_id = data["query"]["bucket_id"]
+    if bucket_id <= 0 or bucket_id > 4:
+         return make_response(jsonify({'error': 'Bucket with id ' + str(bucket_id) + ' not found'}), 404)
+    bucket_id -= 1
+    filename = "judgement." + "query_" + str(query_id) + ".bucket_" + str(bucket_id) + "." + datetime.now().strftime('%Y%m%d%H%M%S') + ".out"
+    output_file = open(filename, "w" )
+    judgements = data["results"]
+    for i in range(len(judgements)):
+        if 'relevance' in judgements[i].keys():
+            relevance = judgements[i]['relevance']
+            if relevance >= 0 and relevance < 3:
+                output_file.write(str(query_id + 1) + " " + judgements[i]['link'] + " " + str(relevance) + "\n")
+            else:
+                return make_response(jsonify({'error': 'Incorrect relevance judgement for ' + str(judgements[i]['link']) + ' judged as ' + str(relevance)}), 404)
+        else:
+             return make_response(jsonify({'error': 'Judgement not present for ' + str(judgements[i]['link'])}), 404)
+
+    return jsonify(request.json)
 
 @app.errorhandler(404)
 def not_found(error):
