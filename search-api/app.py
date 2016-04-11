@@ -26,26 +26,28 @@ def search():
          return make_response(jsonify({'error': 'Query with id ' + str(query_id) + ' not found'}), 404)
     query_id -= 1
 
-    if bucket_id <= 0 or bucket_id > 4:
+    if bucket_id != -1 and (bucket_id <= 0 or bucket_id > 4):
          return make_response(jsonify({'error': 'Bucket with id ' + str(bucket_id) + ' not found'}), 404)
-    bucket_id -= 1
+   
     
-    #google_res = googlesearch.get_res(queries[query_id]['content'])
-    google_res = []
+    google_res = googlesearch.get_res(query_id + 1)
     ucl_res = uclsearch.get_res(queries[query_id]['content'])
     ours_res = []
     results = []
     if bucket_id != -1:
+        bucket_id -= 1 
         results = judging.bucketresults(bucket_id, google_res, ucl_res, ours_res)
-    else:
-        results = {'query': queries[query_id],
+        queries[query_id]['bucket_id'] = bucket_id + 1
+        return make_response(jsonify( 
+        { 'query': queries[query_id],
+         'results': results }), 200)
+    
+    results = {'query': queries[query_id],
          'google' : google_res,
           'ucl': ucl_res,
           'ours': ours_res}
-    queries[query_id]['bucket_id'] = bucket_id + 1
-    return make_response(jsonify( 
-        { 'query': queries[query_id],
-         'results': results }), 200)
+    return make_response(jsonify(results), 200)
+    
     
 
 @app.route('/api/query', methods=['GET'])

@@ -1,5 +1,6 @@
 from flask import make_response
 from datetime import datetime
+import random
 
 def devidebuckets(bucket_id, prefix, res):
 	results = []
@@ -16,10 +17,11 @@ def devidebuckets(bucket_id, prefix, res):
 	return results
 
 def bucketresults(bucket_id, google_res, ucl_res, ours_res):
-	results = []
+	results = [devidebuckets(bucket_id, "1", google_res), devidebuckets(bucket_id, "2", ucl_res),
+		devidebuckets(bucket_id, "3", ours_res)] 
+	random.shuffle(results)
 	#return ucl_res
-	return devidebuckets(bucket_id, "1", google_res) + devidebuckets(bucket_id, "2", ucl_res) 
-	+ devidebuckets(bucket_id, "3", ours_res)
+	return results[0] + results[1] + results[2]
 
 def parsejudgements(data, query_id, bucket_id):
     filename = "judgement." + "query_" + str(query_id) + ".bucket_" + str(bucket_id) + "." + datetime.now().strftime('%Y%m%d%H%M%S') + ".out"
