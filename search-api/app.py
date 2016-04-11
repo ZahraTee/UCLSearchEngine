@@ -3,7 +3,6 @@
 #libraries
 from flask import Flask, jsonify, request, make_response
 import requests
-from datetime import datetime
 
 #project
 from searchimpl import searchapiutil, uclsearch, googlesearch, judging
@@ -63,24 +62,12 @@ def show_post():
     query_id = data["query"]["id"]
     if query_id <= 0 or query_id > len(queries):
          return make_response(jsonify({'error': 'Query with id ' + str(query_id) + ' not found'}), 404)
-    query_id -= 1
 
     bucket_id = data["query"]["bucket_id"]
     if bucket_id <= 0 or bucket_id > 4:
          return make_response(jsonify({'error': 'Bucket with id ' + str(bucket_id) + ' not found'}), 404)
-    bucket_id -= 1
-    filename = "judgement." + "query_" + str(query_id) + ".bucket_" + str(bucket_id) + "." + datetime.now().strftime('%Y%m%d%H%M%S') + ".out"
-    output_file = open(filename, "w" )
-    judgements = data["results"]
-    for i in range(len(judgements)):
-        if 'relevance' in judgements[i].keys():
-            relevance = judgements[i]['relevance']
-            if relevance >= 0 and relevance < 3:
-                output_file.write(str(query_id + 1) + " " + judgements[i]['link'] + " " + str(relevance) + "\n")
-            else:
-                return make_response(jsonify({'error': 'Incorrect relevance judgement for ' + str(judgements[i]['link']) + ' judged as ' + str(relevance)}), 404)
-        else:
-             return make_response(jsonify({'error': 'Judgement not present for ' + str(judgements[i]['link'])}), 404)
+
+    judging.parsejudgements(data, query_id, bucket_id)
 
     return jsonify(request.json)
 

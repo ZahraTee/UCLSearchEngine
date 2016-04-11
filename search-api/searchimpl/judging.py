@@ -1,3 +1,6 @@
+from flask import make_response
+from datetime import datetime
+
 def devidebuckets(bucket_id, prefix, res):
 	results = []
 	for i in range(len(res)):
@@ -17,3 +20,17 @@ def bucketresults(bucket_id, google_res, ucl_res, ours_res):
 	#return ucl_res
 	return devidebuckets(bucket_id, "1", google_res) + devidebuckets(bucket_id, "2", ucl_res) 
 	+ devidebuckets(bucket_id, "3", ours_res)
+
+def parsejudgements(data, query_id, bucket_id):
+    filename = "judgement." + "query_" + str(query_id) + ".bucket_" + str(bucket_id) + "." + datetime.now().strftime('%Y%m%d%H%M%S') + ".out"
+    output_file = open(filename, "w" )
+    judgements = data["results"]
+    for i in range(len(judgements)):
+        if 'relevance' in judgements[i].keys():
+            relevance = judgements[i]['relevance']
+            if relevance >= 0 and relevance < 3:
+                output_file.write(str(query_id) + " " + judgements[i]['link'] + " " + str(relevance) + "\n")
+            else:
+                return make_response(jsonify({'error': 'Incorrect relevance judgement for ' + str(judgements[i]['link']) + ' judged as ' + str(relevance)}), 404)
+        else:
+             return make_response(jsonify({'error': 'Judgement not present for ' + str(judgements[i]['link'])}), 404)
