@@ -40,10 +40,9 @@ def processresults(google_res, ucl_res, ours_res):
 			i = i - 1
 		i = i + 1
 
-	results = [google_res,ucl_res, ours_res] 
-	#shuffle order
+	results = google_res + ucl_res + ours_res 
 	random.shuffle(results)
-	return results[0] + results[1] + results[2]
+	return results
 
 def parsejudgements(data, query_id):
     filename = "judgement." + "query_" + str(query_id) + "." + datetime.now().strftime('%Y%m%d%H%M%S') + ".out"

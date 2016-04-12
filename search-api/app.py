@@ -5,7 +5,7 @@ from flask import Flask, jsonify, request, make_response
 import requests, json
 
 #project
-from searchimpl import searchapiutil, uclsearch, googlesearch, judging
+from searchimpl import searchapiutil, uclsearch, googlesearch, oursearch, judging
 
 app = Flask(__name__)
 
@@ -39,7 +39,7 @@ def search():
     
     google_res = googlesearch.get_res(query_id + 1)
     ucl_res = uclsearch.get_res(queries[query_id]['content'])
-    ours_res = []
+    ours_res = oursearch.get_res(query_id + 1)
     results = []
     #if bucket_id != -1:
     #    bucket_id -= 1 
