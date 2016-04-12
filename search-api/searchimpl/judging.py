@@ -18,25 +18,31 @@ def devidebuckets(bucket_id, prefix, res):
 
 
 
-def bucketresults(bucket_id, google_res, ucl_res, ours_res):
+def processresults(google_res, ucl_res, ours_res):
 	#eliminate duplicate links
 	links_dict = {}
 	for i in range(len(google_res)):
 		links_dict[google_res[i]['link']] = True
+	
 	i = 0
 	while i < len(ucl_res):
 		if ucl_res[i]['link'] in links_dict:
-			print(i)
+			#print(i)
 			ucl_res.pop(i)
 			i = i - 1
 		i = i + 1
 
-	#results = [devidebuckets(bucket_id, "1", google_res), devidebuckets(bucket_id, "2", ucl_res),
-	#	devidebuckets(bucket_id, "3", ours_res)] 
+	i = 0
+	while i < len(ours_res):
+		if ours_res[i]['link'] in links_dict:
+			#print(i)
+			ours_res.pop(i)
+			i = i - 1
+		i = i + 1
 
+	results = [google_res,ucl_res, ours_res] 
 	#shuffle order
 	random.shuffle(results)
-	
 	return results[0] + results[1] + results[2]
 
 def parsejudgements(data, query_id):

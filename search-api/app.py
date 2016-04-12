@@ -51,7 +51,7 @@ def search():
     #      'google' : google_res,
     #       'ucl': ucl_res,
     #       'ours': ours_res}
-    results = google_res + ucl_res + ours_res
+    results = judging.processresults(google_res, ucl_res, ours_res)
     return make_response(json.dumps(results), 200)
 
 @app.route('/api/query', methods=['GET'])
