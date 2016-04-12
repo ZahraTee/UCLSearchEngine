@@ -34,7 +34,7 @@ def parse_item(item, rank):
 
 def parse_results(link, start_rank):
 	html_doc = requests.get(link).text
-	soup = BeautifulSoup(html_doc, 'html.parser')
+	soup = BeautifulSoup(html_doc, 'html5lib')
 	soup = soup.find_all(attrs={'class': 'result__item--web'})
 	results = []
 	i = start_rank

@@ -2,7 +2,7 @@
 
 #libraries
 from flask import Flask, jsonify, request, make_response
-import requests
+import requests, json
 
 #project
 from searchimpl import searchapiutil, uclsearch, googlesearch, judging
@@ -38,15 +38,14 @@ def search():
         bucket_id -= 1 
         results = judging.bucketresults(bucket_id, google_res, ucl_res, ours_res)
         queries[query_id]['bucket_id'] = bucket_id + 1
-        return make_response(jsonify( 
-        { 'query': queries[query_id],
-         'results': results }), 200)
+        return make_response(json.dumps(results), 200)
     
-    results = {'query': queries[query_id],
-         'google' : google_res,
-          'ucl': ucl_res,
-          'ours': ours_res}
-    return make_response(jsonify(results), 200)
+    # results = {'query': queries[query_id],
+    #      'google' : google_res,
+    #       'ucl': ucl_res,
+    #       'ours': ours_res}
+    results = google_res + ucl_res + ours_res
+    return make_response(json.dumps(results), 200)
     
     
 
