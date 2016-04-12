@@ -8,9 +8,6 @@
         </div>
       </div>-->
     
-      
-
-
     <div class="list-group-item row" ng-repeat="result in resultsList" >
       <div class="nine columns">
         <div ng-bind-html="$sce.trustAsHtml(result.desc)">{{result.desc}}</div>
@@ -22,9 +19,16 @@
         <label><input type="radio" ng-model="result.relevance" value="2" ng-value="2"> Highly Relevant</label>
       </div>
     </div>
-
-    <div class="nine columns">
-      <input class="button-primary" value="Submit" type="submit"/>
+    <div class="row">
+      <div class="three columns">
+        <a href= "/query/{{(query_id*1)-1}}" class="button u-full-width" ng-hide="query_id < 1">Previous Query!</a>
+      </div>
+      <div class="six columns">
+        <input class="button-primary u-full-width" value="Submit Judgements" type="submit"/>
+      </div>
+      <div class="three columns">
+        <a href= "/query/{{(query_id*1)+1}}" class="button u-full-width" ng-hide="query_id > 48">Next Query!</a>
+      </div>
     </div>
 
     </form>

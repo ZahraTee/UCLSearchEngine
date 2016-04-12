@@ -13,7 +13,14 @@ queries = searchapiutil.read_queries()
 
 #API start
 @app.route('/')
+@app.route('/query/')
 def index():
+  return make_response(open('templates/index.html').read())
+  ##return "Hello, World! This is an api."#/
+
+@app.route('/query/<int:id>')
+def query_page(id):
+  #if (id > 0 and id <= 49)
   return make_response(open('templates/index.html').read())
   ##return "Hello, World! This is an api."#/
 

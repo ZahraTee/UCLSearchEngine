@@ -6,39 +6,42 @@ var app = angular.module('myApp', [
   'ngResource',
 
 ]).
-config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvider) {
+config(['$routeProvider', '$httpProvider', '$locationProvider', function($routeProvider, $httpProvider, $locationProvider) {
 
-  $routeProvider.
-    when('/', {
+  $routeProvider
+    .when('/query/:id', {
        templateUrl: '../static/partials/view1.html',
+       controller: 'MainController'
     })
-    .otherwise({redirectTo: '/partials/view1'});
+    .otherwise({redirectTo: '/query/1'});
 
    $httpProvider.defaults.withCredentials = true;
         delete $httpProvider.defaults.headers.common["X-Requested-With"];
+
+  $locationProvider.html5Mode(true);
 }]);
 
 app.factory('Api', ['$resource',
     function($resource) {
         return {
-            Judgement: $resource('/api/judgement/22'),
+            Judgement: $resource('/api/judgement/:id', {id:'@id'}),
             Search: $resource('/api/search'),
             Query: $resource('/api/query/:id', {query:'@id'}, {'get': {method:'GET'}})
         };
 }]);
 
-app.controller('MainController', function(Api, $scope, $rootScope, $http, $sce){
-   $scope.$sce = $sce;
-	$scope.resultsList = ["hello"];
+app.controller('MainController', function(Api, $scope, $rootScope, $http, $sce, $routeParams){
+  $scope.$sce = $sce;
+  $scope.query_id = $routeParams.id;
+	$scope.resultsList = [];
  	$scope.loadResults = function(){
-        $scope.resultsList = Api.Search.query({query_id:22});
+        $scope.resultsList = Api.Search.query({query_id:$scope.query_id});
         console.log(JSON.stringify($scope.resultsList));
   }
 
   $scope.postJudgements = function(){
     console.log($scope.resultsList);
-
-    Api.Judgement.save($scope.resultsList);
+    Api.Judgement.save({id: $scope.query_id}, $scope.resultsList);
   }
 
 })
