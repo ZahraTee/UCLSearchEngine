@@ -46,7 +46,7 @@ def processresults(google_res, ucl_res, ours_res):
 
 def parsejudgements(data, query_id):
     filename = "judgement." + "query_" + str(query_id) + "." + datetime.now().strftime('%Y%m%d%H%M%S') + ".out"
-    output_file = open(filename, "w" )
+    output_file = open("judgement_results/" + filename, "w" )
     judgements = data
 
     for i in range(len(judgements)):

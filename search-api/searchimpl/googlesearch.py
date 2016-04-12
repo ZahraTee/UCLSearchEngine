@@ -26,6 +26,6 @@ def get_res_from_api(query):
     return res
 
 def get_res(query_id):
-	input_file = open("results/google_result_" + str(query_id) + ".json", "r")
+	input_file = open("google_results/google_result_" + str(query_id) + ".json", "r")
 	return json.load(input_file)
 
