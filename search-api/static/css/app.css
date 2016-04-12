@@ -28,3 +28,11 @@
   content: "";
   padding: 0;
 }
+
+
+.list-group-item{
+  border:1px solid grey;
+  margin-bottom: 5px;
+  padding: 10px;
+  border-radius: 5px;
+}

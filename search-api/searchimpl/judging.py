@@ -31,21 +31,23 @@ def bucketresults(bucket_id, google_res, ucl_res, ours_res):
 			i = i - 1
 		i = i + 1
 
-	results = [devidebuckets(bucket_id, "1", google_res), devidebuckets(bucket_id, "2", ucl_res),
-		devidebuckets(bucket_id, "3", ours_res)] 
+	#results = [devidebuckets(bucket_id, "1", google_res), devidebuckets(bucket_id, "2", ucl_res),
+	#	devidebuckets(bucket_id, "3", ours_res)] 
 
 	#shuffle order
 	random.shuffle(results)
 	
 	return results[0] + results[1] + results[2]
 
-def parsejudgements(data, query_id, bucket_id):
-    filename = "judgement." + "query_" + str(query_id) + ".bucket_" + str(bucket_id) + "." + datetime.now().strftime('%Y%m%d%H%M%S') + ".out"
+def parsejudgements(data, query_id):
+    filename = "judgement." + "query_" + str(query_id) + "." + datetime.now().strftime('%Y%m%d%H%M%S') + ".out"
     output_file = open(filename, "w" )
-    judgements = data["results"]
+    judgements = data
+
     for i in range(len(judgements)):
         if 'relevance' in judgements[i].keys():
             relevance = judgements[i]['relevance']
+            print("we got here ok too!")
             if relevance >= 0 and relevance < 3:
                 output_file.write(str(query_id) + " " + judgements[i]['link'] + " " + str(relevance) + "\n")
             else:

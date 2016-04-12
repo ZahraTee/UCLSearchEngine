@@ -1,16 +1,32 @@
-    <form>
-      <div class="row" ng-init = "loadResults()">
+    <form ng-init = "loadResults()" ng-submit="postJudgements()">
+      <!--<div class="row" >
         <div class="nine columns">
           <input class="u-full-width" type="text" placeholder = "Enter search query here"></input>
         </div>
         <div class="three columns">
           <input class="button-primary" value="Submit" type="submit"/>
         </div>
+      </div>-->
+    
+      
+
+
+    <div class="list-group-item row" ng-repeat="result in resultsList" >
+      <div class="nine columns">
+        <div ng-bind-html="$sce.trustAsHtml(result.desc)">{{result.desc}}</div>
+        <a href={{result.link}}>{{result.link}}</a>
       </div>
+      <div class = "three columns">
+        <label><input type="radio" ng-model="result.relevance" value="0" ng-value="0"> Not relevant</abel>
+        <label><input type="radio" ng-model="result.relevance" value="1" ng-value="1"> Relevant</label>
+        <label><input type="radio" ng-model="result.relevance" value="2" ng-value="2"> Highly Relevant</label>
+      </div>
+    </div>
+
+    <div class="nine columns">
+      <input class="button-primary" value="Submit" type="submit"/>
+    </div>
+
     </form>
 
-    {{resultsList}}
-
-    <div class="list-group-item" ng-repeat="result in resultsList">
-      {{result}}
-    </div>
+    

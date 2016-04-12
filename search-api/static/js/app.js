@@ -21,16 +21,24 @@ config(['$routeProvider', '$httpProvider', function($routeProvider, $httpProvide
 app.factory('Api', ['$resource',
     function($resource) {
         return {
+            Judgement: $resource('/api/judgement/22'),
             Search: $resource('/api/search'),
             Query: $resource('/api/query/:id', {query:'@id'}, {'get': {method:'GET'}})
         };
 }]);
 
-app.controller('MainController', function(Api, $scope, $rootScope, $http){
+app.controller('MainController', function(Api, $scope, $rootScope, $http, $sce){
+   $scope.$sce = $sce;
 	$scope.resultsList = ["hello"];
  	$scope.loadResults = function(){
         $scope.resultsList = Api.Search.query({query_id:22});
         console.log(JSON.stringify($scope.resultsList));
-    }
+  }
+
+  $scope.postJudgements = function(){
+    console.log($scope.resultsList);
+
+    Api.Judgement.save($scope.resultsList);
+  }
 
 })
