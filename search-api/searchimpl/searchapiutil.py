@@ -1,3 +1,5 @@
+import requests
+
 def read_credentials():
     f = open('credentials', 'r')
     return {'key' : f.readline().rstrip('\n'), 'cx': f.readline().rstrip('\n')}
@@ -35,3 +37,14 @@ def normalize(url):
     if url[-1]=='/':
         url = url[:-1]
     return url
+
+def check_if_html(link):
+    if link.endswith(".pdf"):
+        print(link + " not an html.")
+        return False
+    r = requests.head(link)
+    print(link)
+    if 'Content-Type' in r.headers.keys() and "text/html" in r.headers['Content-Type']:
+        return True
+    print(link + " not an html.")
+    return False

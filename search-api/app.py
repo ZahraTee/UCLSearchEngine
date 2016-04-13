@@ -27,33 +27,20 @@ def query_page(id):
 @app.route('/api/search', methods=['GET'])
 def search():
     query_id = request.args.get('query_id', -1, type = int)
-  #  bucket_id = request.args.get('bucket', -1, type = int)
-
+  
     if query_id <= 0 or query_id > len(queries):
          return make_response(jsonify({'error': 'Query with id ' + str(query_id) + ' not found'}), 404)
-    query_id -= 1
 
-  #  if bucket_id != -1 and (bucket_id <= 0 or bucket_id > 4):
-  #       return make_response(jsonify({'error': 'Bucket with id ' + str(bucket_id) + ' not found'}), 404)
-   
-    
-    google_res = googlesearch.get_res(query_id + 1)
+    google_res = googlesearch.get_res(query_id)
     print("Google results: " + str(len(google_res)))
-    ucl_res = uclsearch.get_res(queries[query_id]['content'])
-    print("UCL results: " + str(len(ucl_res)))
-    ours_res = oursearch.get_res(query_id + 1)
-    print("Our results: " + str(len(ours_res)))
-    results = []
-    #if bucket_id != -1:
-    #    bucket_id -= 1 
-    #    results = judging.bucketresults(bucket_id, google_res, ucl_res, ours_res)
-    ##    queries[query_id]['bucket_id'] = bucket_id + 1
-     #   return make_response(json.dumps(results), 200)
     
-    # results = {'query': queries[query_id],
-    #      'google' : google_res,
-    #       'ucl': ucl_res,
-    #       'ours': ours_res}
+    ucl_res = uclsearch.get_res(query_id)
+    print("UCL results: " + str(len(ucl_res)))
+    
+    ours_res = oursearch.get_res(query_id)
+    print("Our results: " + str(len(ours_res)))
+    
+    results = []
     results = judging.processresults(google_res, ucl_res, ours_res)
     return make_response(json.dumps(results), 200)
 
@@ -71,12 +58,7 @@ def show_post(query_id):
     if query_id <= 0 or query_id > len(queries):
          return make_response(jsonify({'error': 'Query with id ' + str(query_id) + ' not found'}), 404)
 
-    #bucket_id = data["query"]["bucket_id"]
-    #if bucket_id <= 0 or bucket_id > 4:
-    #     return make_response(jsonify({'error': 'Bucket with id ' + str(bucket_id) + ' not found'}), 404)
-
     judging.parsejudgements(data, query_id)#, bucket_id#/)
-
     return json.dumps(request.json)
 
 @app.errorhandler(404)
