@@ -43,7 +43,7 @@ def check_if_html(link):
         print(link + " not an html.")
         return False
     r = requests.head(link)
-    print(link)
+    #print(link)
     if 'Content-Type' in r.headers.keys() and "text/html" in r.headers['Content-Type']:
         return True
     print(link + " not an html.")

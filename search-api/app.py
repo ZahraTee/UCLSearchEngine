@@ -57,8 +57,7 @@ def show_post(query_id):
     data = request.json
     if query_id <= 0 or query_id > len(queries):
          return make_response(jsonify({'error': 'Query with id ' + str(query_id) + ' not found'}), 404)
-
-    judging.parsejudgements(data, query_id)#, bucket_id#/)
+    judging.parsejudgements(data, query_id)
     return json.dumps(request.json)
 
 @app.errorhandler(404)
