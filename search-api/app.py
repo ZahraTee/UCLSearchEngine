@@ -38,8 +38,11 @@ def search():
    
     
     google_res = googlesearch.get_res(query_id + 1)
+    print("Google results: " + str(len(google_res)))
     ucl_res = uclsearch.get_res(queries[query_id]['content'])
+    print("UCL results: " + str(len(ucl_res)))
     ours_res = oursearch.get_res(query_id + 1)
+    print("Our results: " + str(len(ours_res)))
     results = []
     #if bucket_id != -1:
     #    bucket_id -= 1 
