@@ -220,7 +220,7 @@ Life Sciences
 <top>
 <id>37
 <category>event name
-<query>Graduation
+<query>Graduation	
 </top>
 
 <top>

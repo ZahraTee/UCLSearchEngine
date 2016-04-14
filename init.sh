@@ -1,3 +1,6 @@
+#Install Scrapy
+pip install scrapy
+
 #Crawling
 cd crawler
 scrapy crawl two
