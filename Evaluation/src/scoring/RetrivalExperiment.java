@@ -41,11 +41,10 @@ public class RetrivalExperiment {
 	long total_tokens;
 	long total_documents;
 	
-	double[] params;
 	
-	String[] URLs;
-	HashMap<String,Integer> URLIndexMap;
-	double[] PageRank;
+	static String[] URLs;
+	static HashMap<String,Integer> URLIndexMap;
+	static double[] PageRank;
 	final String originalModel;
 	
 	/* Initialize Simple model with index. Use 
@@ -53,12 +52,11 @@ public class RetrivalExperiment {
 	 * @param prefix : language prefix for index 
 	 * with location of index created using bash script.
 	 */
-	public RetrivalExperiment(String index_path, String prefix,String urls_path,String page_rank_path,String originalModel) {
+	public RetrivalExperiment(String index_path, String prefix,String originalModel) {
 		
 		// Load the index and collection stats
 		this.originalModel=originalModel;
 		try {
-			loadURLsAndPageRanks(urls_path,page_rank_path);
 			index = Index.createIndex(index_path, prefix);
 			
 			System.out.println("Loaded index from path "+index_path+" "+index.toString());
@@ -74,7 +72,7 @@ public class RetrivalExperiment {
 		}
 	}
 	
-	private void loadURLsAndPageRanks(String urls_path,String page_rank_path) throws FileNotFoundException
+	static void loadURLsAndPageRanks(String urls_path,String page_rank_path) throws FileNotFoundException
 	{
 		//Stores the URL of document with id x in URLs[x]
 		URLs = new String[200891];
@@ -93,9 +91,9 @@ public class RetrivalExperiment {
 		pr.close();
 	}
 	
-	public double newScore(double oldScore,double pageRank)
+	public static double newScore(double oldScore,double pageRank,double[] params)
 	{
-		return oldScore*params[0]+pageRank*params[1];
+		return oldScore*pageRank*params[0]+oldScore*params[1]+pageRank*params[2];
 	}
 	
 	public HashMap <String, Double> buildResultSet(String id, String query){
@@ -124,8 +122,7 @@ public class RetrivalExperiment {
 		HashMap <String, Double> scores = new HashMap<String, Double>();
 		for (int i = 0 ; i < doc_scores.length;i++){
 			int n = Integer.parseInt(doc_names[i].substring(12, doc_names[i].length()-4));
-			
-			scores.put(URLs[n], newScore(doc_scores[i],PageRank[n]));
+			scores.put(URLs[n], doc_scores[i]);
 		}
 			
 		
@@ -223,22 +220,30 @@ public class RetrivalExperiment {
 				judgment_file_name[n]=name;
 			}
 		}
-		
+		loadURLsAndPageRanks(url_path,page_rank_path);
 		
 				
 		//Load Qrels
 		ArrayList<ArrayList<Qrel>> qrels =loadQrels(judgment_file_name,relevance_judgments_path);
 		
 		// Load the topics
-		TRECQuery trec_topics ;
+		TRECQuery trec_topics = new TRECQuery(topic_file_path);
 						
 		// Configure These
 		String originalModel = "BM25";
-		double minLimit[] = new double[]{0.0,0.0};
-		double maxLimit[] = new double[]{1.0,10000.0};
-		double step[] = new double[]{0.1,1000.0};
+		double minLimit[] = new double[]{0.0,0.0,0.0};
+		double maxLimit[] = new double[]{1.0,1.0,10000.0};
+		double step[] = new double[]{0.1,0.1,1000.0};
 		
-		RetrivalExperiment scorer = new RetrivalExperiment(index_path, "ucl_search_engine",url_path,page_rank_path,originalModel);
+		RetrivalExperiment scorer = new RetrivalExperiment(index_path, "ucl_search_engine",originalModel);
+		int nextId=0;
+		ArrayList<HashMap<String,Double>> allScores = new ArrayList<HashMap<String,Double>>();
+		allScores.add(null);
+		for(int q=1;q<=50;q++)
+		{
+			String query = trec_topics.next();
+			allScores.add(scorer.buildResultSet(nextId+++"", query));
+		}
 		
 		int n=0;
 		
@@ -249,19 +254,17 @@ public class RetrivalExperiment {
 		for(int i=0;i<cur.length;i++)
 			cur[i]=minLimit[i];
 		
-		int nextId=0;
 		
 		do
 		{
 			n++;
-			trec_topics = new TRECQuery(topic_file_path);
-			scorer.params=cur;
 			double ndcg=0;
 			for(int q=1;q<=50;q++)
 			{	
-				String query = trec_topics.next();
 					
-				HashMap<String, Double> scores = scorer.buildResultSet(nextId+++"", query);
+				HashMap<String, Double> scores = new HashMap<String,Double>();
+				for(Entry<String,Double> e:allScores.get(q).entrySet())
+					scores.put(e.getKey(), newScore(e.getValue(),PageRank[URLIndexMap.get(e.getKey())],cur));
 							
 				ArrayList<Entry<String,Double>> ent = new ArrayList<Entry<String,Double>>(scores.entrySet());
 					
